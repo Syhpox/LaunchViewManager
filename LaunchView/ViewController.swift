@@ -18,6 +18,8 @@ class ViewController: UIViewController {
         
         let screenRect = UIScreen.main.bounds
         let manager = LaunchViewsManager()
+        let launch = LaunchImgView()
+        manager.add(launch)
 
         for _ in 0..<5 {
             let launch0 = LaunchSubView.init(frame: screenRect)
@@ -29,8 +31,6 @@ class ViewController: UIViewController {
 
         }
         
-//        let launch = LaunchImgView()
-//        manager.add(launch)
         
         self.view.addSubview(manager.launchView)
         

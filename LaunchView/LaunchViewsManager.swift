@@ -28,6 +28,7 @@ class LaunchViewsManager {
     fileprivate var index: Int = 0
     /// 强行引用自己
     fileprivate var strongSelf: LaunchViewsManager?
+    var completeBlc:(() -> Void)?
     
     init(frame: CGRect) {
         self.launchView = LaunchView.init(frame: frame)
@@ -46,18 +47,21 @@ class LaunchViewsManager {
         
         if index > self.subViews.count - 1 {
             launchView.removeFromSuperview()
+            if let blc = completeBlc {
+                blc()
+            }
             self.strongSelf = nil
             return
         }
         launchView.addSubview(self.subViews[index])
         
+
+        if index - 1 < self.subViews.count - 1, index - 1 >= 0 {
+            self.subViews[index - 1].removeFromSuperview()
+        } 
         index += 1
 
-        guard index - 1 > self.subViews.count - 1, index - 1 >= 0 else {
-            return
-        }
-        self.subViews[index - 1].removeFromSuperview()
-        
+
     }
     
     /// 添加源
@@ -100,17 +104,13 @@ public class LaunchView: UIView {
     }
     
     func setup() {
-        
+        self.backgroundColor = .clear
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// 检测内存释放
-    deinit {
-        print("\(self) 内存释放")
-    }
-
+    
 
 }
